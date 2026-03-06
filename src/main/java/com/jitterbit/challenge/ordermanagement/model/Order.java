@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Table(name = "tb_order")
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -22,18 +23,22 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "orderId")
+    @EqualsAndHashCode.Include
     private UUID orderId;
 
     @NotNull
     @Min(1)
+    @Column(name = "value")
     private Integer value;
 
+    @Column(name = "creationDate")
     private OffsetDateTime creationDate;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Items> items = new ArrayList<>();
+    private List<OrderItem> items = new ArrayList<>();
 
-    public void addItem(Items item) {
+    public void addItem(OrderItem item) {
         items.add(item);
         item.setOrder(this);
     }
